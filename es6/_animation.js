@@ -87,6 +87,35 @@ Llaneza.Animation.animate = function(item) {
 }
 
 
+Llaneza.ScrollTo = {}; 
+
+Llaneza.ScrollTo.animate = function(item) {
+
+    var self = this;
+
+    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop
+
+    var scrollBy = item.to.getBoundingClientRect().top;
+
+    this.options = {
+        duration: 500,
+        ease: false
+    }
+
+    Llaneza.Animation.animate({
+      options : self.options,
+      run: function(rate) { 
+          window.scrollTo(0, scrollTop + scrollBy*rate);
+      }
+    })
+}
+
+// setTimeout(function() { 
+//   Llaneza.ScrollTo.animate({
+//      options : { duration : 400, ease : true },
+//      to : document.querySelector("video")
+//   });
+// }, 1000);
 
 // setTimeout(function() {
 
