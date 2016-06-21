@@ -4,6 +4,11 @@ var _requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAn
 
 Llaneza.Animation = {}; 
 
+Llaneza.Animation.init = function(item) {
+
+  return Object.assign({}, Llaneza.Animation);
+}
+
 Llaneza.Animation.animate = function(item) {
 
     var self = this;
@@ -110,16 +115,38 @@ Llaneza.ScrollTo.animate = function(item) {
     })
 }
 
+
+Llaneza.Animation.animateStaggered = function(items) { 
+
+    var obj =  Object.assign({}, Llaneza.Animation);
+
+    [].forEach.call(items.elements, el => {
+
+        obj = obj.animate({
+          options : items.options,
+          run: function(rate) { 
+                el.style[items.attribute] = 1-rate;
+            }
+        });
+    }); 
+
+    return obj;
+};
+
+//var objScrollAni = Llaneza.Animation.init();
+
 // setTimeout(function() { 
-//   Llaneza.ScrollTo.animate({
+//   objScrollAni.animate({
 //      options : { duration : 400, ease : true },
-//      to : document.querySelector("video")
+//      to : document.querySelector("#section-2")
 //   });
 // }, 1000);
 
 // setTimeout(function() {
 
-//   Llaneza.Animation.animate({
+//   var obj1 = Llaneza.Animation.init();
+//   var obj2 = Llaneza.Animation.init();
+//   obj1.animate({
 //     options : { duration : 500, ease : false },
 //     run: function(rate) { 
 //           document.querySelector("h1").style.transform = "translateY("+ (100 * rate) + "px)";
@@ -127,7 +154,7 @@ Llaneza.ScrollTo.animate = function(item) {
 //     }).animate({
 //     options : { duration : 500, ease : true, waiting : true },
 //     run: function(rate) { 
-//           document.querySelector("h1").style.transform = "translateX("+ (100 * rate) + "px)";
+//           document.querySelector("h1").style.transform = "translateY(100px) translateX("+ (100 * rate) + "px)";
 //       }
 //     }).animate({
 //     options : { duration : 500, ease : true, delay : 500 },
@@ -135,6 +162,17 @@ Llaneza.ScrollTo.animate = function(item) {
 //           document.querySelector("h1").style.opacity = 1-rate;
 //       }
 //   });
+
+//   obj2.animateStaggered({
+//     options : { duration : 200, ease : true, delay : 500, waiting : true },
+//     elements : document.querySelectorAll("p"), 
+//     attribute : "opacity"
+//   }).animate({
+//     options : { duration : 500, ease : false, waiting : true },
+//     run: function(rate) { 
+//           document.querySelector("h1").style.opacity = rate;
+//       }
+//   });  
 
 // },1000);
 

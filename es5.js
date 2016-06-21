@@ -126,6 +126,11 @@ var _requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAn
 
 Llaneza.Animation = {};
 
+Llaneza.Animation.init = function (item) {
+
+    return _extends({}, Llaneza.Animation);
+};
+
 Llaneza.Animation.animate = function (item) {
     var _this2 = this;
 
@@ -210,6 +215,48 @@ Llaneza.Animation.animate = function (item) {
 
     return nextAnimation;
 }
+
+Llaneza.ScrollTo = {};
+
+Llaneza.ScrollTo.animate = function (item) {
+
+    var self = this;
+
+    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+    var scrollBy = item.to.getBoundingClientRect().top;
+
+    this.options = {
+        duration: 500,
+        ease: false
+    };
+
+    Llaneza.Animation.animate({
+        options: self.options,
+        run: function run(rate) {
+            window.scrollTo(0, scrollTop + scrollBy * rate);
+        }
+    });
+};
+
+
+Llaneza.Animation.animateStaggered = function (items) {
+
+    var obj = _extends({}, Llaneza.Animation);
+
+    [].forEach.call(items.elements, function (el) {
+
+        obj = obj.animate({
+            options: items.options,
+            run: function run(rate) {
+                el.style[items.attribute] = 1 - rate;
+            }
+        });
+    });
+
+    return obj;
+};
+
 
 // setTimeout(function() {
 
